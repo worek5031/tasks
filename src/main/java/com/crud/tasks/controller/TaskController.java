@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/task")
+@CrossOrigin(origins = "*")
 public class TaskController {
 
     private final DbService dbService;
@@ -44,13 +45,13 @@ public class TaskController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, value = "updateTask")
-    public TaskDto updateTask(@RequestBody TaskDto taskDto) {
+    public TaskDto updateTask(@RequestParam TaskDto taskDto) {
         Task task = taskMapper.mapToTask(taskDto);
         Task savedTask = dbService.saveTask(task);
         return taskMapper.mapToTaskDto(savedTask);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createTask")
+    @RequestMapping(method = RequestMethod.POST, value = "createTask",  consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createTask(@RequestBody TaskDto taskDto) {
     Task task = taskMapper.mapToTask(taskDto);
     dbService.saveTask(task);
